@@ -16,4 +16,7 @@ class Category(models.Model):
         
     def get_url(self):
         return reversed
+    
+    def __str__(self):
+        return self.category_name
 

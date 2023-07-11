@@ -29,6 +29,10 @@ class Product(models.Model):
     def countReview(self):
         reviews = ReviewRating.objects.filter(product=self, status=True).aggregate(count=models.Count('id'))
         return reviews.get('count') and int(reviews['count']) or 0
+    
+
+    class Meta:
+        ordering = ['-modified_date']
 
 class VariationManager(models.Manager):
     def colors(self):
@@ -72,3 +76,15 @@ class ReviewRating(models.Model):
 
     def __str__(self):
         return self.subject
+    
+
+class ProductGallery(models.Model):
+    product = models.ForeignKey(Product, default=None, on_delete=models.CASCADE)
+    image = models.ImageField(upload_to='store/products', max_length=255)
+
+    def __str__(self):
+        return self.product.product_name
+    
+    class Meta:
+        verbose_name = 'Product Gallery'
+        verbose_name_plural = "Product Gallery"
